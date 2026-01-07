@@ -3,7 +3,7 @@ PYTHON_MAIN = source/__main__.py
 PROJECT_DIR = source/
 VENV_DIR = .venv
 
-.PHONY: install run lint clean docker-build docker-up docker-down docker-logs help all venv
+.PHONY: install run lint clean docker-build docker-up docker-down docker-logs help all venv dev-up dev-down dev-logs seed health migration
 
 default: help
 
@@ -66,5 +66,29 @@ docker-down:
 docker-logs:
 	@echo "Просмотр логов для сервиса: $(SERVICE)..."
 	docker compose logs -f -t $(SERVICE)
+
+dev-up:
+	@echo "Starting development services (DB, Redis)..."
+	docker compose -f docker-compose.dev.yml up -d
+
+dev-down:
+	@echo "Stopping development services..."
+	docker compose -f docker-compose.dev.yml down
+
+dev-logs:
+	docker compose -f docker-compose.dev.yml logs -f
+
+seed:
+	@echo "Seeding database with test data..."
+	uv run python scripts/db_seed.py
+
+health:
+	@echo "Checking services health..."
+	uv run python scripts/health_check.py
+
+migration:
+	@echo "Creating new migration: $(MESSAGE)"
+	chmod +x scripts/create_migration.sh
+	./scripts/create_migration.sh "$(MESSAGE)"
 
 all: lint

@@ -70,8 +70,9 @@ class LoggingConfigurator:
     def _add_file_handlers(self) -> None:
         common_file_args = {
             "format": self.config.FILE_LOG_FORMAT,
-            "rotation": None,
-            "compression": None,
+            "rotation": self.config.FILE_ROTATION,
+            "retention": self.config.FILE_RETENTION,
+            "compression": self.config.FILE_COMPRESSION,
             "encoding": "utf-8",
             "mode": "a",
             "colorize": False,

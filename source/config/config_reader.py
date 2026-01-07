@@ -1,5 +1,6 @@
 from pydantic import PostgresDsn
 from pydantic import SecretStr
+from pydantic import field_validator
 from pydantic_settings import BaseSettings
 from pydantic_settings import SettingsConfigDict
 from redis.asyncio import Redis
@@ -10,6 +11,17 @@ class TelegramSettings(BaseSettings):
     admin_ids: list[int]
     webhook_use: bool
     webhook_path: str
+
+    @field_validator("admin_ids")
+    @classmethod
+    def validate_admin_ids(cls, value: list[int]) -> list[int]:
+        if not value:
+            raise ValueError("Admin IDs list cannot be empty")
+        if len(value) != len(set(value)):
+            raise ValueError("Admin IDs list contains duplicates")
+        if any(admin_id <= 0 for admin_id in value):
+            raise ValueError("Admin IDs must be positive integers")
+        return value
 
 
 class WebhookSettings(BaseSettings):
@@ -65,6 +77,7 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         env_nested_delimiter="__",
     )
+    environment: str = "production"
     db: DatabaseSettings
     webhook: WebhookSettings
     tg: TelegramSettings

@@ -4,7 +4,6 @@ from aiogram.fsm.storage.redis import RedisStorage
 from aiogram_dialog import setup_dialogs
 
 from source.config import settings
-from source.database import db_manager
 from source.telegram import setup_middlewares
 from source.telegram import setup_routers
 
@@ -14,7 +13,7 @@ def create_dispatcher() -> Dispatcher:
         redis=settings.redis.redis_connection(),
         key_builder=DefaultKeyBuilder(with_bot_id=True, with_destiny=True),
     )
-    dp = Dispatcher(storage=storage, session_pool=db_manager.session_maker)
+    dp = Dispatcher(storage=storage)
 
     setup_middlewares(dp)
     setup_routers(dp)

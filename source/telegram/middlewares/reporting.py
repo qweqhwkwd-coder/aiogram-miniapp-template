@@ -10,7 +10,7 @@ from typing import Any
 
 
 class ErrorReportingMiddleware(BaseMiddleware):
-    def __init__(self, admin_ids: int) -> None:
+    def __init__(self, admin_ids: list[int]) -> None:
         self.admin_ids = admin_ids
 
     async def __call__(

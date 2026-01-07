@@ -27,9 +27,7 @@ class UserRepository(AbstractRepository[UserOrm, int]):
         return user
 
     async def get(self, user_id: int) -> UserOrm | None:
-        stmt = select(self.model).filter_by(user_id=user_id)
-        result = await self.session.execute(stmt)
-        return result.scalar_one_or_none()
+        return await self.get_by_filters(user_id=user_id)
 
     async def update(self, user_id: int, data: dict[str, Any]) -> UserOrm | None:
         user = await self.get(user_id=user_id)
@@ -42,18 +40,10 @@ class UserRepository(AbstractRepository[UserOrm, int]):
         return None
 
     async def delete(self, **filters: Any) -> None:
-        stmt = delete(self.model).filter_by(**filters)
-        await self.session.execute(stmt)
+        await self.delete_by_filters(**filters)
 
     async def add_by_filters(self, data: dict[str, Any]) -> UserOrm:
-        user = self.model(**data)
-        self.session.add(user)
-        try:
-            await self.session.flush()
-        except IntegrityError as exc:
-            await self.session.rollback()
-            raise ValueError("User with this user_id already exists") from exc
-        return user
+        return await self.add(data)
 
     async def get_by_filters(self, **filters: Any) -> UserOrm | None:
         stmt = select(self.model).filter_by(**filters)

@@ -21,7 +21,11 @@ class UserService:
             user = await self._uow.users.get(user_id)
 
             if not user:
-                user = await self._uow.users.add(user_data)
+                try:
+                    user = await self._uow.users.add(user_data)
+                except ValueError:
+                    await self._uow.rollback()
+                    user = await self._uow.users.get(user_id)
 
             return user
 
@@ -45,14 +49,11 @@ class UserService:
             await self._uow.users.delete(user_id=user_id)
 
     async def add_user_by_filters(self, data: dict[str, Any]) -> UserOrm:
-        async with self._uow:
-            user = await self._uow.users.add_by_filters(data)
-            return user
+        return await self.add_user(data)
 
     async def get_user_by_filters(self, **filters: Any) -> UserOrm | None:
         async with self._uow:
-            user = await self._uow.users.get_by_filters(**filters)
-            return user
+            return await self._uow.users.get_by_filters(**filters)
 
     async def update_users_by_filters(
         self,

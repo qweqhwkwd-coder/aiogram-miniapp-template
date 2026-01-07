@@ -8,17 +8,23 @@ from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter
 from fastapi import FastAPI
 from fastapi import Request
+from sqlalchemy.ext.asyncio import AsyncEngine
 
 from source.config import settings
 from source.database import create_tables
-from source.database import drop_tables
 from source.utils import set_default_commands
+
+try:
+    from prometheus_client import make_asgi_app
+except ImportError:  # pragma: no cover - optional dependency
+    make_asgi_app = None
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI, bot: Bot, dp: Dispatcher):
-    await drop_tables()
-    await create_tables()
+async def lifespan(app: FastAPI, bot: Bot, dp: Dispatcher, container: AsyncContainer):
+    if settings.environment != "production":
+        engine = await container.get(AsyncEngine)
+        await create_tables(engine)
 
     await set_default_commands(bot)
 
@@ -35,9 +41,9 @@ async def lifespan(app: FastAPI, bot: Bot, dp: Dispatcher):
         await bot.delete_webhook()
 
 
-def create_app(bot: Bot, dp: Dispatcher) -> FastAPI:
+def create_app(bot: Bot, dp: Dispatcher, container: AsyncContainer) -> FastAPI:
     async def app_lifespan(app: FastAPI):
-        async with lifespan(app, bot, dp):
+        async with lifespan(app, bot, dp, container):
             yield
 
     app = FastAPI(lifespan=app_lifespan)
@@ -56,5 +62,7 @@ def create_app(bot: Bot, dp: Dispatcher) -> FastAPI:
         return {"ok": True}
 
     app.include_router(webhook_router)
+    if make_asgi_app is not None:
+        app.mount("/metrics", make_asgi_app())
 
     return app

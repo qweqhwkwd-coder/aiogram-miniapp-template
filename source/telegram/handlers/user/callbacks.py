@@ -18,11 +18,12 @@ async def language_ru(
     user_service: FromDishka[UserService],
 ) -> None:
     user = callback.from_user
-    changed_language = "русский"
 
     await callback.answer("")
     await user_service.update_user(user.id, {"language_code": "ru"})
+    i18n.invalidate_cache(user.id)
 
+    changed_language = await i18n(user.id, "language-name-ru")
     text = await i18n(user.id, "changed_language", language=changed_language)
 
     await callback.message.delete()
@@ -37,11 +38,12 @@ async def language_en(
     user_service: FromDishka[UserService],
 ) -> None:
     user = callback.from_user
-    changed_language = "english"
 
     await callback.answer("")
     await user_service.update_user(user.id, {"language_code": "en"})
+    i18n.invalidate_cache(user.id)
 
+    changed_language = await i18n(user.id, "language-name-en")
     text = await i18n(user.id, "changed_language", language=changed_language)
 
     await callback.message.delete()

@@ -23,6 +23,7 @@ class UserOrm(Base, TableNameMixin):
     role: Mapped[UserRole] = mapped_column(
         SQLAlchemyEnum(UserRole),
         default=UserRole.user,
+        server_default="user",
         nullable=False,
         comment="Роль пользователя в системе",
     )

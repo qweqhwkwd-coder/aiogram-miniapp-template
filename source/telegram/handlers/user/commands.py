@@ -27,7 +27,6 @@ async def start(
 ) -> None:
     user = message.from_user
     await user_service.register_user(user.id)
-    await user_service.get_user(user.id)
     greeting = await i18n(user.id, "greeting", mention=user.full_name)
     await message.answer(greeting)
 

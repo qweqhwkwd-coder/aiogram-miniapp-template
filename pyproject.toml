@@ -42,6 +42,7 @@ dependencies = [
     "loguru>=0.7.3",
     "pydantic>=2.11.7",
     "pydantic-settings>=2.10.1",
+    "prometheus-client>=0.20.0",
     "redis>=6.4.0",
     "sqlalchemy>=2.0.43",
     "uvicorn>=0.35.0",
@@ -57,6 +58,11 @@ dev = [
     "pre-commit>=4.2.0",
     "ruff>=0.11.7",
     "sqlalchemy[mypy]>=2.0.43",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
+    "httpx>=0.28.0",
 ]
 
 [project.urls]
@@ -116,6 +122,26 @@ ignore = [
 unfixable = ["B"]
 
 [tool.ruff.lint.isort]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--cov=source",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "e2e: End-to-end tests",
+]
 
 [tool.setuptools.packages.find]
 include = ["source*"]

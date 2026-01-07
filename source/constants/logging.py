@@ -10,6 +10,9 @@ class LoggingConfig:
     FILE_MESSAGE: bool = True
     FILE_FULL: bool = True
     FILE_ERROR: bool = True
+    FILE_ROTATION: str = "100 MB"
+    FILE_RETENTION: str = "30 days"
+    FILE_COMPRESSION: str = "zip"
 
     BASE_LOG_DIR: Path = Path("source") / "data"
     ERROR_LOG_DIR: Path = Path("source") / "data" / "error_logs"

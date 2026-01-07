@@ -1,10 +1,10 @@
-from aiogram import F
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 from dishka import FromDishka
 from dishka.integrations.aiogram import inject as aiogram_inject
 
+from source.telegram.filters import AgeValidator
 from source.telegram.states import FormSG
 from source.utils import I18n
 
@@ -21,7 +21,7 @@ async def process_name(
     await message.answer(await i18n(message.from_user.id, "fsm-enter-age"))
 
 
-@user_fsm_router.message(FormSG.age, F.text.regexp(r"^\d{1,3}$"))
+@user_fsm_router.message(FormSG.age, AgeValidator())
 @aiogram_inject
 async def process_age(
     message: Message, state: FSMContext, i18n: FromDishka[I18n]
@@ -41,4 +41,4 @@ async def process_age(
 @user_fsm_router.message(FormSG.age)
 @aiogram_inject
 async def invalid_age(message: Message, i18n: FromDishka[I18n]) -> None:
-    await message.answer(await i18n(message.from_user.id, "fsm-enter-age"))
+    await message.answer(await i18n(message.from_user.id, "invalid-age"))

@@ -17,4 +17,5 @@ USER appuser
 
 CMD ["python", "/app/source/__main__.py"]
 
-EXPOSE 8080
+ARG WEBHOOK__PORT=8080
+EXPOSE ${WEBHOOK__PORT}

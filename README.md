@@ -4,7 +4,7 @@
 
 <h1>Aiogram Bot Template</h1>
 
-<img alt="Static Badge" src="https://img.shields.io/badge/tag-v1.0-8A2BE2?style=flat&logo=task&logoColor=8A2BE2&labelColor=gray">
+<img alt="Static Badge" src="https://img.shields.io/badge/tag-v0.1.0-8A2BE2?style=flat&logo=task&logoColor=8A2BE2&labelColor=gray">
 <img alt="Static Badge" src="https://img.shields.io/badge/python-v3.12-FBDE02?style=flat&logo=python&logoColor=FBDE02&labelColor=gray">
 <img alt="Static Badge" src="https://img.shields.io/badge/license-MIT-12C4C4?style=flat&logo=gitbook&logoColor=12C4C4">
 <br>
@@ -180,9 +180,13 @@
 *   `📁 source/database/core/` - Database core modules (connection, sessions).
 *   `📁 source/database/models/` - Database model definitions.
 *   `📁 source/database/repositories/` - Repositories for database data access.
+*   `📁 source/database/specifications/` - Query specifications.
 *   `📁 source/database/tools/` - Helper tools for working with the database.
+*   `📁 source/domain/` - Domain events and value objects.
+*   `📁 source/dto/` - Data transfer objects.
 *   `📁 source/enums/` - Enum definitions.
 *   `📁 source/factory/` - Factories for creating the bot, dispatcher, webhook server and DI container.
+*   `📁 source/infrastructure/` - External integrations (cache, monitoring).
 *   `📁 source/locales/` - Localization files (translations).
 *   `📁 source/locales/en/` - English language localization.
 *   `📁 source/locales/ru/` - Russian language localization.
@@ -200,6 +204,9 @@
 *   `📁 source/utils/` - Helper utilities (logger setup, commands, translations).
 *   `📄 source/__main__.py` - Main entry point within the `source` package.
 *   `📄 .env.example` - Example file for sensitive data (.env).
+*   `📁 docs/` - Development and deployment documentation.
+*   `📁 scripts/` - Helper scripts for development tasks.
+*   `📁 tests/` - Test suite.
 
 ⠀
 ## ⚙️ Configuration
@@ -218,6 +225,7 @@ cp .env.example .env
 
 | Environment Variable Name | Description |
 |---------------------------|-------------|
+| ENVIRONMENT               | Application environment (`development`, `test`, `production`). |
 | TG__WEBHOOK_USE           | Boolean value (`True`/`False`) indicating whether to use webhooks (`True`) or long polling (`False`). |
 | TG__WEBHOOK_PATH          | Path for Telegram to send webhook updates (appended to `WEBHOOK__URL`). |
 | TG__BOT_TOKEN             | Your Telegram bot token, obtained from `@BotFather` in Telegram. |
@@ -323,13 +331,52 @@ cp .env.example .env
     ```
 
 ⠀
+## 🗄️ Migrations
+⠀
+
+Create and apply migrations with Alembic:
+
+```shell
+make migration MESSAGE="create users"
+uv run alembic upgrade head
+```
+
+⠀
+## 🧪 Testing
+⠀
+
+Run tests locally:
+
+```shell
+uv run pytest tests/
+```
+
+⠀
+## 🧰 Pre-commit
+⠀
+
+```shell
+pre-commit install
+pre-commit run --all-files
+```
+
+⠀
+## 🧩 Development Services
+⠀
+
+```shell
+make dev-up
+make dev-down
+```
+
+⠀
 ## 📋 Todo List
 ⠀
 
 - [x] touch the grass
 - [x] Alembic
 - [x] Aiogram-dialog
-- [ ] .github/workflows
+- [x] .github/workflows
 
 ⠀
 ## 🗃️ Stack of Technologies
@@ -343,6 +390,7 @@ cp .env.example .env
 *   [postgresql](https://github.com/postgres/postgres) with [sqlalchemy](https://github.com/sqlalchemy/sqlalchemy) and [asyncpg](https://github.com/MagicStack/asyncpg?tab=readme-ov-file) - Database layer.
 *   [redis](https://redis.io/) - In-memory data store for FSM and caching.
 *   [loguru](https://github.com/Delgan/loguru) - Logging library.
+*   [prometheus-client](https://github.com/prometheus/client_python) - Metrics exporter (optional).
 *   [cachetools](https://github.com/tkem/cachetools) & [fluentogram](https://github.com/Arustinal/fluentogram) - Caching and localization helpers.
 *   [Ruff](https://github.com/astral-sh/ruff), [Mypy](https://github.com/python/mypy), [Pre-commit](https://github.com/pre-commit/pre-commit), [Isort](https://github.com/pycqa/isort), [Black](https://github.com/psf/black) - Code quality and formatting tools.
 
