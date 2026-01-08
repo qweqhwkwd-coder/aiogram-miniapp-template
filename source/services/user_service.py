@@ -4,30 +4,37 @@ from typing import Any
 from source.database import AbstractUnitOfWork
 from source.database import UserOrm
 
+from .base import BaseService
 
-class UserService:
-    def __init__(self, uow: AbstractUnitOfWork):
-        self._uow = uow
+
+class UserService(BaseService[UserOrm]):
+    def __init__(self, uow: AbstractUnitOfWork) -> None:
+        super().__init__(uow)
 
     async def register_user(
         self,
         user_id: int,
     ) -> UserOrm:
-        async with self._uow:
-            user_data = {
-                "user_id": user_id,
-            }
+        try:
+            async with self._uow:
+                user_data = {
+                    "user_id": user_id,
+                }
 
-            user = await self._uow.users.get(user_id)
+                user = await self._uow.users.get(user_id)
 
-            if not user:
-                try:
-                    user = await self._uow.users.add(user_data)
-                except ValueError:
-                    await self._uow.rollback()
-                    user = await self._uow.users.get(user_id)
+                if not user:
+                    try:
+                        user = await self._uow.users.add(user_data)
+                        self.log_operation("user_registered", user_id=user_id)
+                    except ValueError:
+                        await self._uow.rollback()
+                        user = await self._uow.users.get(user_id)
 
-            return user
+                return user
+        except Exception as e:
+            self.log_error("register_user", e, user_id=user_id)
+            raise
 
     async def add_user(self, data: dict[str, Any]) -> UserOrm:
         async with self._uow:
@@ -40,13 +47,32 @@ class UserService:
             return user
 
     async def update_user(self, user_id: int, data: dict[str, Any]) -> UserOrm | None:
-        async with self._uow:
-            updated_user = await self._uow.users.update(user_id, data)
-            return updated_user
+        try:
+            async with self._uow:
+                updated_user = await self._uow.users.update(user_id, data)
+                self.log_operation(
+                    "user_updated",
+                    user_id=user_id,
+                    fields=list(data.keys()),
+                )
+                return updated_user
+        except Exception as e:
+            self.log_error(
+                "update_user",
+                e,
+                user_id=user_id,
+                fields=list(data.keys()),
+            )
+            raise
 
     async def delete_user(self, user_id: int) -> None:
-        async with self._uow:
-            await self._uow.users.delete(user_id=user_id)
+        try:
+            async with self._uow:
+                await self._uow.users.delete(user_id=user_id)
+                self.log_operation("user_deleted", user_id=user_id)
+        except Exception as e:
+            self.log_error("delete_user", e, user_id=user_id)
+            raise
 
     async def add_user_by_filters(self, data: dict[str, Any]) -> UserOrm:
         return await self.add_user(data)
