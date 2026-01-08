@@ -202,3 +202,10 @@ pyrightconfig.json
 [Ss]cripts
 pyvenv.cfg
 pip-selfcheck.json
+# track project scripts folder
+!/scripts/
+!/scripts/**
+
+# track project scripts folder
+!/scripts/
+!/scripts/**
