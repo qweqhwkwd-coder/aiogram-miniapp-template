@@ -232,7 +232,7 @@ Full documentation is available in the [`docs/`](docs/) folder:
 ## 💻 Bot Setup
 ⠀
 
-### Quick Start with Docker (Recommended)
+### 📦 Using Docker (Recommended)
 ⠀
 
 1.  Clone the repository and navigate into the project directory:
@@ -257,7 +257,7 @@ Full documentation is available in the [`docs/`](docs/) folder:
     ```
 
 ⠀
-### Using UV (Local Development)
+### 📦 Using UV (Local Development)
 ⠀
 
 1.  Clone the repository and navigate into the project directory:
@@ -393,7 +393,7 @@ make dev-down
 ## 💼 Credits
 ⠀
 
--   [aiogram_template](https://github.com/Lems0n/aiogram_template) - Inspired by Abdullah's project, many thanks to him <3
+-   [aiogram-bot-template](https://github.com/MrConsoleka/aiogram-bot-template) - My scalable template for Telegram bots on aiogram without Mini Apps.
 
 ⠀
 ## 👤 Author
