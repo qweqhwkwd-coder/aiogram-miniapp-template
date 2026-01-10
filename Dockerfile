@@ -1,21 +1,15 @@
-FROM ghcr.io/astral-sh/uv:0.5-python3.11-alpine
-
-ENV UV_COMPILE_BYTECODE=1 \
-    UV_LINK_MODE=copy \
-    PATH="/app/.venv/bin:$PATH"
+FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY . .
+RUN pip install uv
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen \
-    && adduser -D appuser \
-    && chown -R appuser:appuser .
+COPY pyproject.toml uv.lock ./
 
-USER appuser
+RUN uv sync --frozen
 
-CMD ["python", "/app/source/__main__.py"]
+COPY source/ ./source/
+COPY migrations/ ./migrations/
+COPY alembic.ini ./
 
-ARG WEBHOOK__PORT=8080
-EXPOSE ${WEBHOOK__PORT}
+CMD ["uv", "run", "python", "-m", "source"]

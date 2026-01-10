@@ -7,6 +7,7 @@ Quick path to install, run, and add your first handler.
 ## Guides
 Short, copy-paste oriented how-tos.
 - Core: [configuration](guides/configuration.md), [handlers](guides/handlers.md), [services](guides/services.md)
+- Mini Apps: [mini-apps](guides/mini-apps.md)
 - Storage + shipping: [database](guides/database.md), [deployment](guides/deployment.md), [docker](guides/docker.md)
 
 ## Reference

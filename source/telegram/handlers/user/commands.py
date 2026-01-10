@@ -10,6 +10,7 @@ from dishka import FromDishka
 from dishka.integrations.aiogram import inject as aiogram_inject
 
 from source.services import UserService
+from source.telegram.keyboards import get_profile_webapp_keyboard
 from source.telegram.keyboards import inline_language_kb
 from source.telegram.states import DialogSG
 from source.telegram.states import FormSG
@@ -58,3 +59,19 @@ async def start_form(
 ) -> None:
     await state.set_state(FormSG.name)
     await message.answer(await i18n(message.from_user.id, "fsm-enter-name"))
+
+
+@user_commands_router.message(Command("profile"))
+@aiogram_inject
+async def profile_command(
+    message: Message,
+    user_service: FromDishka[UserService],
+    i18n: FromDishka[I18n],
+) -> None:
+    await user_service.register_user(message.from_user.id)
+    text = await i18n(message.from_user.id, "profile-intro")
+    button_text = await i18n(message.from_user.id, "profile-open-button")
+    await message.answer(
+        text,
+        reply_markup=get_profile_webapp_keyboard(button_text),
+    )

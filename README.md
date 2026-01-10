@@ -15,7 +15,7 @@
 ## 📌 Description
 ⠀
 
-**Aiogram Bot Template** — This template helps you quickly bootstrap Telegram bots on the `aiogram` 3.x stack. It already includes a ready project structure, command and message handlers, optional PostgreSQL/Redis integration, logging with `loguru`, internationalization, support for `aiogram-dialog`, and dependency injection via `dishka` with optional webhook handling on `FastAPI`. The template is designed to remove routine setup and let you focus on your bot’s logic.
+**Aiogram Bot Template** — This template helps you quickly bootstrap Telegram bots on the `aiogram` 3.x stack. It already includes a ready project structure, command and message handlers, optional PostgreSQL/Redis integration, logging with `loguru`, internationalization, support for `aiogram-dialog`, dependency injection via `dishka` with optional webhook handling on `FastAPI`, plus a Mini App backend (FastAPI) and a React webapp scaffold for profiles.
 
 ⠀
 ## 🔨 Functions
@@ -24,6 +24,7 @@
 *   `/start` - Start the bot
 *   `/language` - Change language
 *   `/help` - Help
+*   `/profile` - Open your Mini App profile
 *   `/admin` - Command for administrators
 *   `/dialog` - Demo dialog using `aiogram-dialog`
 *   `/fsm` - Demo finite state machine form
@@ -59,12 +60,20 @@
 │   └── health_check.py
 │
 ├───┐ 📂 source/
+│   ├───┐ 📂 api/
+│   │   ├── __init__.py
+│   │   ├── app.py
+│   │   ├───┐ 📂 middlewares/
+│   │   ├───┐ 📂 routes/
+│   │   └───┐ 📂 utils/
+│   │
 │   ├───┐ 📂 config/
 │   │   ├── __init__.py
 │   │   └── config_reader.py
 │   │
 │   ├───┐ 📂 constants/
 │   │   ├── __init__.py
+│   │   ├── api.py
 │   │   ├── logging.py
 │   │   └── throttling.py
 │   │
@@ -116,6 +125,7 @@
 │   │
 │   ├───┐ 📂 factory/
 │   │   ├── __init__.py
+│   │   ├── api.py
 │   │   ├── bot.py
 │   │   ├── container.py
 │   │   ├── dispatcher.py
@@ -147,6 +157,13 @@
 │   │   ├── cache_service.py
 │   │   └── user_service.py
 │   │
+│   ├───┐ 📂 schemas/
+│   │   ├── __init__.py
+│   │   ├── auth.py
+│   │   ├── base.py
+│   │   ├── responses.py
+│   │   └── user.py
+│   │
 │   ├───┐ 📂 telegram/
 │   │   ├───┐ 📂 filters/
 │   │   │   ├── __init__.py
@@ -167,12 +184,15 @@
 │   │   │   │   ├── common.py
 │   │   │   │   ├── orm.py
 │   │   │   │   └── telegram.py
-│   │   │   └───┐ 📂 user/
+│   │   │   ├───┐ 📂 user/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── callbacks.py
+│   │   │   │   ├── commands.py
+│   │   │   │   ├── fsm.py
+│   │   │   │   └── messages.py
+│   │   │   └───┐ 📂 webapp/
 │   │   │       ├── __init__.py
-│   │   │       ├── callbacks.py
-│   │   │       ├── commands.py
-│   │   │       ├── fsm.py
-│   │   │       └── messages.py
+│   │   │       └── callbacks.py
 │   │   │
 │   │   ├───┐ 📂 keyboards/
 │   │   │   ├── __init__.py
@@ -180,7 +200,8 @@
 │   │   │   ├── builder.py
 │   │   │   ├── callback_factory.py
 │   │   │   ├── inline.py
-│   │   │   └── reply.py
+│   │   │   ├── reply.py
+│   │   │   └── webapp.py
 │   │   │
 │   │   ├───┐ 📂 middlewares/
 │   │   │   ├── __init__.py
@@ -214,6 +235,20 @@
 │   ├───┐ 📂 integration/
 │   └───┐ 📂 unit/
 │
+├───┐ 📂 nginx/
+│   ├── nginx.conf
+│   ├── nginx.dev.conf
+│   └── nginx.webapp.conf
+│
+├───┐ 📂 webapp/
+│   ├───┐ 📂 public/
+│   ├───┐ 📂 src/
+│   ├── .env.example
+│   ├── index.html
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── vite.config.ts
+│
 ├── alembic.ini
 ├── .env.example
 ├── .dockerignore
@@ -222,6 +257,7 @@
 ├── docker-compose.dev.yml
 ├── docker-compose.yml
 ├── Dockerfile
+├── webapp.Dockerfile
 ├── LICENSE
 ├── Makefile
 ├── pyproject.toml

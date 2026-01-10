@@ -3,7 +3,7 @@ PYTHON_MAIN = source/__main__.py
 PROJECT_DIR = source/
 VENV_DIR = .venv
 
-.PHONY: install run lint clean docker-build docker-up docker-down docker-logs help all venv dev-up dev-down dev-logs seed health migration
+.PHONY: install run dev lint clean docker-build docker-up docker-down docker-logs help all venv dev-up dev-down dev-logs seed health migration migrate migrate-new webapp-dev webapp-build webapp-install
 
 default: help
 
@@ -12,6 +12,12 @@ help:
 	@echo "  venv          - Create a virtual environment (using uv and pyproject.toml)"
 	@echo "  install       - Install project dependencies (using uv and pyproject.toml)"
 	@echo "  run           - Run the bot locally (in the created environment)"
+	@echo "  dev           - Run the bot locally (alias for run)"
+	@echo "  migrate       - Apply database migrations"
+	@echo "  migrate-new   - Create a new Alembic migration"
+	@echo "  webapp-dev    - Run the WebApp in dev mode"
+	@echo "  webapp-build  - Build the WebApp"
+	@echo "  webapp-install - Install WebApp dependencies"
 	@echo "  lint          - Check the code and format (in the created environment)"
 	@echo "  clean         - Delete temporary files and caches"
 	@echo "  docker-build  - Build Docker image"
@@ -29,11 +35,32 @@ $(VENV_DIR):
 install: venv
 	@echo "Installing dependencies..."
 	uv pip install -e .[dev]
+	@echo "Installing WebApp dependencies..."
+	cd webapp && npm install
 	@echo "Dependencies installed."
 
 run:
 	@echo "Launch project..."
 	uv run python $(PYTHON_MAIN)
+
+dev: run
+
+migrate:
+	@echo "Applying migrations..."
+	uv run alembic upgrade head
+
+migrate-new:
+	@echo "Creating migration: $(name)"
+	uv run alembic revision --autogenerate -m "$(name)"
+
+webapp-dev:
+	cd webapp && npm run dev -- --host 0.0.0.0
+
+webapp-build:
+	cd webapp && npm run build
+
+webapp-install:
+	cd webapp && npm install
 
 lint:
 	@echo "Starting checks..."
@@ -56,7 +83,7 @@ docker-build:
 
 docker-up:
 	@echo "Starting container..."
-	docker compose up -d
+	docker compose up -d --build
 
 docker-down:
 	@echo "Starting container deletion..."

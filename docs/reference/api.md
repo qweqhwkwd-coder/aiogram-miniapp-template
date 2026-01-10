@@ -6,6 +6,8 @@ Use the service in handlers or other services via DI.
 user = await user_service.register_user(message.from_user.id)
 user = await user_service.get_user(message.from_user.id)
 await user_service.update_user(message.from_user.id, {"language_code": "en"})
+user = await user_service.get_or_create_user(telegram_id=message.from_user.id)
+await user_service.update_bio(message.from_user.id, "Hello there")
 ```
 
 ## CacheService

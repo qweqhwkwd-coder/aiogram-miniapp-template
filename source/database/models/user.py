@@ -3,6 +3,7 @@ from sqlalchemy import BigInteger
 from sqlalchemy import DateTime
 from sqlalchemy import Enum as SQLAlchemyEnum
 from sqlalchemy import String
+from sqlalchemy import Text
 from sqlalchemy import func
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -32,6 +33,11 @@ class UserOrm(Base, TableNameMixin):
         default="en",
         server_default="en",
         comment="Язык ('ru', 'en' и т.д.)",
+    )
+    bio: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+        comment="Биография пользователя",
     )
 
     created_at: Mapped[datetime] = mapped_column(

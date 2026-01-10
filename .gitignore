@@ -171,6 +171,12 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
+### WebApp ###
+webapp/node_modules/
+webapp/dist/
+webapp/.env
+webapp/.env.*
+
 # Cython debug symbols
 cython_debug/
 

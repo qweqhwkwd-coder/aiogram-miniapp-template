@@ -10,6 +10,7 @@ from fastapi import FastAPI
 from fastapi import Request
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from source.api import setup_api
 from source.config import settings
 from source.database import create_tables
 from source.utils import set_default_commands
@@ -64,5 +65,7 @@ def create_app(bot: Bot, dp: Dispatcher, container: AsyncContainer) -> FastAPI:
     app.include_router(webhook_router)
     if make_asgi_app is not None:
         app.mount("/metrics", make_asgi_app())
+
+    setup_api(app)
 
     return app

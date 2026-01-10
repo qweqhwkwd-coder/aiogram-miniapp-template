@@ -16,6 +16,10 @@ make docker-up
 make docker-logs SERVICE=bot
 ```
 
+## Mini App stack
+The production compose file includes `webapp` and `nginx`.
+`nginx` exposes port 80 and proxies `/api` to the bot API and `/` to the WebApp.
+
 ## Useful commands
 Quick helpers for common docker checks.
 ```bash

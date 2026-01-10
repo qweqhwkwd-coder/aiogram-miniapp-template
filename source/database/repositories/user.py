@@ -36,6 +36,8 @@ class UserRepository(AbstractRepository[UserOrm, int]):
             for key, value in data.items():
                 if hasattr(user, key) and key not in ["id", "user_id"]:
                     setattr(user, key, value)
+            await self.session.flush()
+            await self.session.refresh(user)
             return user
         return None
 

@@ -70,6 +70,16 @@ class RedisSettings(BaseSettings):
         )
 
 
+class ApiSettings(BaseSettings):
+    host: str = "0.0.0.0"
+    port: int = 8000
+    debug: bool = False
+
+
+class WebAppSettings(BaseSettings):
+    url: str = "http://localhost:3000"
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         case_sensitive=False,
@@ -82,6 +92,8 @@ class Settings(BaseSettings):
     webhook: WebhookSettings
     tg: TelegramSettings
     redis: RedisSettings
+    api: ApiSettings = ApiSettings()
+    webapp: WebAppSettings = WebAppSettings()
 
 
 settings = Settings()

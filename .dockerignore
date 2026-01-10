@@ -17,3 +17,5 @@ README.md
 **/.env
 **/.aws/
 **/.ssh/
+webapp/node_modules/
+webapp/dist/

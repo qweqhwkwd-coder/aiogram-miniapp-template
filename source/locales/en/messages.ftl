@@ -15,3 +15,5 @@ dialog-welcome = This is a demo dialog
 dialog-next = Next
 dialog-second = This is the second window
 dialog-close = Close
+profile-intro = 👤 <b>Your profile</b>\n\nPress the button below to open the full profile card and edit your info.
+profile-open-button = 👤 Open profile

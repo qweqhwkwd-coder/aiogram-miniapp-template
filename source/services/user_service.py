@@ -98,3 +98,38 @@ class UserService(BaseService[UserOrm]):
         async with self._uow:
             users = await self._uow.users.list_by_filters(**filters)
             return users
+
+    async def get_by_telegram_id(self, telegram_id: int) -> UserOrm | None:
+        return await self.get_user(telegram_id)
+
+    async def get_or_create_user(
+        self,
+        telegram_id: int,
+        username: str | None = None,
+        first_name: str | None = None,
+        last_name: str | None = None,
+        language_code: str | None = None,
+    ) -> UserOrm:
+        try:
+            async with self._uow:
+                user = await self._uow.users.get(telegram_id)
+                if user:
+                    if language_code and user.language_code != language_code:
+                        user = await self._uow.users.update(
+                            telegram_id,
+                            {"language_code": language_code},
+                        )
+                    return user
+
+                user_data: dict[str, Any] = {"user_id": telegram_id}
+                if language_code:
+                    user_data["language_code"] = language_code
+                user = await self._uow.users.add(user_data)
+                self.log_operation("user_registered", user_id=telegram_id)
+                return user
+        except Exception as e:
+            self.log_error("get_or_create_user", e, user_id=telegram_id)
+            raise
+
+    async def update_bio(self, telegram_id: int, bio: str | None) -> UserOrm | None:
+        return await self.update_user(telegram_id, {"bio": bio})

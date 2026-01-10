@@ -52,6 +52,7 @@ async def set_default_commands(bot: Bot) -> None:
     common_commands = [
         BotCommand(command="start", description="Launch bot"),
         BotCommand(command="help", description="Instructions for use"),
+        BotCommand(command="profile", description="My profile"),
         BotCommand(command="language", description="Change language"),
         BotCommand(command="dialog", description="Open dialog"),
         BotCommand(command="fsm", description="Start fsm"),

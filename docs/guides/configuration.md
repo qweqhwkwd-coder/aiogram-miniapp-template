@@ -25,6 +25,12 @@ REDIS__PORT=6379
 REDIS__USER=default
 REDIS__PASSWORD=password
 REDIS__DB=0
+
+API__HOST=0.0.0.0
+API__PORT=8000
+API__DEBUG=false
+
+WEBAPP__URL=https://your-webapp-domain.com
 ```
 
 ## Optional variables
