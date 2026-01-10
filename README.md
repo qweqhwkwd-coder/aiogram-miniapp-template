@@ -247,9 +247,8 @@ Full documentation is available in the [`docs/`](docs/) folder:
     ```shell
     cp .env.example .env
     cp webapp/.env.example webapp/.env
+    # Edit .env and webapp/.env with your settings
     ```
-
-    Edit `.env` and `webapp/.env` with your settings (see tables above).
 
 3.  Start all services with Docker Compose:
 
@@ -319,7 +318,7 @@ Full documentation is available in the [`docs/`](docs/) folder:
     npm run dev
     ```
 
-    If running Vite dev server, set `WEBAPP__URL=http://localhost:3000` in `.env`.
+    If running Vite dev server, set `WEBAPP__URL` in `.env`.
 
 ⠀
 ## 🗄️ Migrations
