@@ -20,6 +20,7 @@ This guide helps you run the bot and the Mini App locally in minutes. It covers 
 git clone https://github.com/MrConsoleka/aiogram-miniapp-template.git
 cd aiogram-miniapp-template
 cp .env.example .env
+cp webapp/.env.example webapp/.env
 ```
 
 ## 2. Configure Environment
@@ -37,6 +38,7 @@ Notes:
 - `TG__WEBHOOK_USE=False` enables polling for local development.
 - `WEBAPP__URL` is used to build the WebApp button in `/profile`.
 - Use `http://localhost` if you run the full Docker stack with nginx.
+- `webapp/.env` controls frontend API base URL (`VITE_API_URL`).
 
 For full configuration details, see [guides/configuration.md](guides/configuration.md).
 

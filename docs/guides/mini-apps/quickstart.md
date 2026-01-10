@@ -19,6 +19,12 @@ WEBAPP__URL=http://localhost:3000
 
 Use `http://localhost` when running the full Docker stack with nginx.
 
+Also copy the frontend env file (optional):
+
+```bash
+cp webapp/.env.example webapp/.env
+```
+
 ## Step 2: Start the Backend
 
 ```bash

@@ -46,8 +46,8 @@
 
 **Security Hardened:**
 - CORS restricted to Telegram domains
-- Security headers via nginx (CSP, X-Frame-Options, HSTS)
-- Non-root Docker containers
+- Security headers via nginx (CSP, X-Frame-Options, etc.)
+- Backend runs as non-root user
 - SQL injection protection via ORM
 - XSS protection via React auto-escaping
 
@@ -55,7 +55,7 @@
 - **Docker Compose** for one-command deployment
 - **Multi-stage Dockerfiles** for optimized images
 - **nginx** reverse proxy for API + WebApp
-- **Health checks** for all services
+- **Health checks** for bot, PostgreSQL, Redis, webapp, and nginx
 - **Pre-commit hooks** (Ruff, Mypy, Black, isort)
 
 ⠀
@@ -205,7 +205,6 @@ Full documentation is available in the [`docs/`](docs/) folder:
 | WEBHOOK__URL              | Public URL where Telegram will send updates if webhooks are enabled. |
 | WEBHOOK__HOST             | Host or IP address where the webhook server will listen for incoming connections (usually `0.0.0.0`). |
 | WEBHOOK__PORT             | Port on which the webhook server will listen for incoming connections. |
-| WEBHOOK__PATH             | Specific path on the server where Telegram will send POST requests with updates. |
 | WEBHOOK__SECRET           | Secret token that Telegram includes in webhook request headers to verify authenticity. |
 | DB__HOST                  | Database server host. |
 | DB__PORT                  | Port for connecting to the database. |
@@ -227,6 +226,8 @@ Full documentation is available in the [`docs/`](docs/) folder:
 | Environment Variable Name | Description |
 |---------------------------|-------------|
 | VITE_API_URL              | Base URL for the Mini App API (default `/api`). |
+
+Note: docker-compose maps `WEBHOOK__PORT` to the host (defaults to `8080` if not set).
 
 ⠀
 ## 💻 Bot Setup
@@ -318,7 +319,7 @@ Full documentation is available in the [`docs/`](docs/) folder:
     npm run dev
     ```
 
-    If running Vite dev server, set `WEBAPP__URL` in `.env`.
+    If running Vite dev server, set `WEBAPP__URL=http://localhost:3000` in `.env`.
 
 ⠀
 ## 🗄️ Migrations

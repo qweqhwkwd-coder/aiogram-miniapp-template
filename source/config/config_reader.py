@@ -28,7 +28,6 @@ class WebhookSettings(BaseSettings):
     url: str
     host: str
     port: int
-    path: str
     secret: SecretStr
 
 

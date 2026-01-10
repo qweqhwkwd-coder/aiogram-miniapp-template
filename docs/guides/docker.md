@@ -35,6 +35,8 @@ Services:
 - `webapp`: React Mini App
 - `nginx`: Reverse proxy and static server
 
+Port mapping note: `WEBHOOK__PORT` controls the bot port (defaults to `8080` if not set).
+
 ## Logs
 
 ```bash
@@ -58,7 +60,7 @@ docker compose exec redis redis-cli -a $REDIS__PASSWORD ping
 ```
 
 ## Environment Variables in Containers
-The bot container loads `.env` directly. Keep it up to date with `.env.example`.
+The bot container loads `.env` directly. Keep it up to date with `.env.example`. The WebApp build reads `webapp/.env` (for `VITE_API_URL`) at build time.
 
 ## Common Issues
 

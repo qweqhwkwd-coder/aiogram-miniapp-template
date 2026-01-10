@@ -38,7 +38,6 @@ TG__WEBHOOK_PATH=/telegram
 WEBHOOK__URL=https://your-domain.example
 WEBHOOK__HOST=0.0.0.0
 WEBHOOK__PORT=8000
-WEBHOOK__PATH=/webhook
 WEBHOOK__SECRET=long_random_secret
 
 DB__HOST=db
@@ -88,7 +87,6 @@ Notes:
 WEBHOOK__URL=https://your-domain.example
 WEBHOOK__HOST=0.0.0.0
 WEBHOOK__PORT=8000
-WEBHOOK__PATH=/webhook
 WEBHOOK__SECRET=long_random_secret
 ```
 
@@ -175,7 +173,7 @@ API__DEBUG=false
 
 ### Webhook does not receive updates
 **Symptoms:** Telegram updates are missing.
-**Cause:** `WEBHOOK__URL` or `WEBHOOK__PATH` mismatch.
+**Cause:** `WEBHOOK__URL` or `TG__WEBHOOK_PATH` mismatch.
 **Solution:** Verify the final URL equals `WEBHOOK__URL + TG__WEBHOOK_PATH`.
 
 ### API docs not available
