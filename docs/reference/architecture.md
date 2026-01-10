@@ -7,16 +7,16 @@ This document describes the logical architecture, data flow, and key components 
 
 ```mermaid
 flowchart LR
-    U[Telegram User] --> T[Telegram Client]
-    T --> B[Bot (aiogram)]
-    B --> D[(PostgreSQL)]
-    B --> R[(Redis)]
-    T --> W[Mini App (React)]
-    W --> A[FastAPI API]
-    A --> D
-    A --> R
-    W --> N[nginx]
-    N --> A
+    U[Telegram User] --> T[Telegram Client];
+    T --> B[Bot: aiogram];
+    B --> D[(PostgreSQL)];
+    B --> R[(Redis)];
+    T --> W[Mini App: React];
+    W --> A[FastAPI API];
+    A --> D;
+    A --> R;
+    W --> N[nginx];
+    N --> A;
 ```
 
 ## Bot Update Flow
