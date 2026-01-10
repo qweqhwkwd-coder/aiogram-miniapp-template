@@ -190,19 +190,10 @@ Full documentation is available in the [`docs/`](docs/) folder:
 - [REST API Reference](docs/reference/rest-api.md)
 
 ⠀
-## ⚙️ Configuration
-⠀
-
-Before running the bot, you need to set up your environment variables. Copy the `.env.example` file to `.env` and fill in your credentials and settings:
-
-```shell
-cp .env.example .env
-# Then edit the .env file with your configurations
-```
-
-⠀
 ## 🔓 Environment Variables
 ⠀
+
+**Backend & Bot (`.env`):**
 
 | Environment Variable Name | Description |
 |---------------------------|-------------|
@@ -231,6 +222,12 @@ cp .env.example .env
 | **API__DEBUG**            | **Debug mode for API (`true`/`false`).** |
 | **WEBAPP__URL**           | **Public URL where Mini App is hosted (e.g., `https://your-domain.com`).** |
 
+**Mini App Frontend (`webapp/.env`):**
+
+| Environment Variable Name | Description |
+|---------------------------|-------------|
+| VITE_API_URL              | Base URL for the Mini App API (default `/api`). |
+
 ⠀
 ## 💻 Bot Setup
 ⠀
@@ -249,15 +246,10 @@ cp .env.example .env
 
     ```shell
     cp .env.example .env
+    cp webapp/.env.example webapp/.env
     ```
 
-    Edit `.env` and add your bot token from [@BotFather](https://t.me/BotFather):
-
-    ```env
-    TG__BOT_TOKEN=YOUR_BOT_TOKEN_HERE
-    TG__ADMIN_IDS=[YOUR_TELEGRAM_ID]
-    WEBAPP__URL=http://localhost
-    ```
+    Edit `.env` and `webapp/.env` with your settings (see tables above).
 
 3.  Start all services with Docker Compose:
 
@@ -308,7 +300,8 @@ cp .env.example .env
 
     ```shell
     cp .env.example .env
-    # Edit .env with your bot token and settings
+    cp webapp/.env.example webapp/.env
+    # Edit .env and webapp/.env with your settings
     ```
 
 7.  Run the bot:
@@ -326,27 +319,7 @@ cp .env.example .env
     npm run dev
     ```
 
-    If running Vite dev server, set `WEBAPP__URL=http://localhost:5173` in `.env`.
-
-⠀
-### Docker Commands
-⠀
-
-Additional useful commands:
-
-```shell
-# Build images
-make docker-build
-
-# View logs
-make docker-logs
-
-# View logs for specific service
-make docker-logs SERVICE=bot
-
-# Stop services
-make docker-down
-```
+    If running Vite dev server, set `WEBAPP__URL=http://localhost:3000` in `.env`.
 
 ⠀
 ## 🗄️ Migrations
