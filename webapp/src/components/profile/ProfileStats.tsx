@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 import "./ProfileStats.css";
 
@@ -15,12 +16,13 @@ export const ProfileStats: FC<ProfileStatsProps> = ({
   language,
   createdAt
 }) => {
+  const { t } = useTranslation();
   const stats = [
-    { label: "Telegram ID", value: telegramId.toString() },
-    { label: "ID в базе", value: dbId.toString() },
-    { label: "Язык", value: language.toUpperCase() },
+    { label: t("profile.stats.telegramId"), value: telegramId.toString() },
+    { label: t("profile.stats.userId"), value: dbId.toString() },
+    { label: t("profile.stats.language"), value: language.toUpperCase() },
     {
-      label: "В боте с",
+      label: t("profile.stats.registeredAt"),
       value: new Date(createdAt).toLocaleDateString()
     }
   ];

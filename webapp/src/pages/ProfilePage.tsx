@@ -1,4 +1,5 @@
 import { FC, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import { authApi } from "../api/endpoints";
 import { ProfileCard } from "../components/profile";
@@ -8,6 +9,7 @@ import { useUserStore } from "../store/useUserStore";
 import "./ProfilePage.css";
 
 export const ProfilePage: FC = () => {
+  const { t } = useTranslation();
   const { isReady } = useTelegram();
   const { user, isLoading, error, setUser, setError, setLoading } =
     useUserStore();
@@ -41,7 +43,9 @@ export const ProfilePage: FC = () => {
   if (error) {
     return (
       <div className="profile-page profile-page--error">
-        <p>Ошибка: {error}</p>
+        <p>
+          {t("common.error")}: {error}
+        </p>
       </div>
     );
   }

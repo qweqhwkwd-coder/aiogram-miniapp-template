@@ -4,6 +4,8 @@ from dishka.integrations.fastapi import setup_dishka
 
 from source.api.middlewares import cors_settings
 from source.api.middlewares import error_handler_middleware
+from source.api.middlewares import LoggingMiddleware
+from source.api.middlewares import RateLimitMiddleware
 from source.api.routes import auth
 from source.api.routes import health
 from source.api.routes import users
@@ -14,6 +16,9 @@ from source.constants import API_REDOC_URL
 
 
 def setup_api(app: FastAPI) -> None:
+    app.add_middleware(RateLimitMiddleware, requests_per_minute=100)
+    app.add_middleware(LoggingMiddleware)
+
     app.add_middleware(CORSMiddleware, **cors_settings())
 
     app.middleware("http")(error_handler_middleware)

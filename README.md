@@ -18,6 +18,79 @@
 **Aiogram Bot Template** — This template helps you quickly bootstrap Telegram bots on the `aiogram` 3.x stack. It already includes a ready project structure, command and message handlers, optional PostgreSQL/Redis integration, logging with `loguru`, internationalization, support for `aiogram-dialog`, dependency injection via `dishka` with optional webhook handling on `FastAPI`, plus a Mini App backend (FastAPI) and a React webapp scaffold for profiles.
 
 ⠀
+## 🌐 Mini Apps Support
+⠀
+
+This template includes full support for Telegram Mini Apps with FastAPI backend and React frontend.
+
+### Architecture
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│  Telegram App   │────▶│     Nginx       │────▶│   FastAPI API   │
+│  (WebApp)       │     │  (reverse proxy)│     │   (bot:8000)    │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+        │                       │                       │
+        │                       ▼                       ▼
+        │               ┌─────────────────┐     ┌─────────────────┐
+        └──────────────▶│  React WebApp   │     │   PostgreSQL    │
+                        │  (webapp:80)    │     │   + Redis       │
+                        └─────────────────┘     └─────────────────┘
+```
+
+### API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/auth/validate` | POST | Validate Telegram initData |
+| `/api/users/me` | GET | Get current user profile |
+| `/api/users/me` | PATCH | Update profile (bio, language) |
+| `/api/health` | GET | Health check |
+
+### Security Features
+
+- ✅ HMAC-SHA256 validation of Telegram initData
+- ✅ Replay attack protection (1 hour token expiration)
+- ✅ CORS restricted to Telegram domains only
+- ✅ Rate limiting (100 requests/minute)
+- ✅ Security headers via nginx
+- ✅ Non-root Docker user
+
+### Running WebApp Locally
+
+1. Start all services:
+   ```bash
+   docker-compose up -d
+   ```
+
+2. Or run separately for development:
+   ```bash
+   # Terminal 1: Backend
+   make run
+   
+   # Terminal 2: Frontend
+   cd webapp
+   npm install
+   npm run dev
+   ```
+
+3. Configure your bot to use WebApp (see `/profile` command example).
+
+### Environment Variables for Mini Apps
+
+```bash
+# .env
+ENVIRONMENT=development  # development | production
+
+# API Settings
+API__HOST=0.0.0.0
+API__PORT=8000
+
+# WebApp URL (for CORS)
+WEBAPP__URL=https://your-domain.com
+```
+
+⠀
 ## 🔨 Functions
 ⠀
 
