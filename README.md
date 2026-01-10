@@ -1,580 +1,397 @@
 <div align="center">
 
-<img width="250" height="250" alt="image" src="https://github.com/user-attachments/assets/a67162ea-bf43-4713-a27e-0581a8534b5b" />
+<img width="250" height="250" alt="Aiogram Mini App Template" src="https://github.com/user-attachments/assets/a67162ea-bf43-4713-a27e-0581a8534b5b" />
 
-<h1>Aiogram Bot Template</h1>
+<h1>🚀 Aiogram Mini App Template</h1>
+<p><strong>Production-ready Telegram Bot + Mini Apps template with FastAPI backend and React frontend</strong></p>
 
-<img alt="Static Badge" src="https://img.shields.io/badge/tag-v1.0-8A2BE2?style=flat&logo=task&logoColor=8A2BE2&labelColor=gray">
-<img alt="Static Badge" src="https://img.shields.io/badge/python-v3.12-FBDE02?style=flat&logo=python&logoColor=FBDE02&labelColor=gray">
-<img alt="Static Badge" src="https://img.shields.io/badge/license-MIT-12C4C4?style=flat&logo=gitbook&logoColor=12C4C4">
-<br>
-<img alt="Static Badge" src="https://img.shields.io/badge/Aiogram-v3.22.0-blue?style=flat">
+<img alt="Python" src="https://img.shields.io/badge/python-3.12-blue?style=flat&logo=python&logoColor=white" />
+<img alt="Aiogram" src="https://img.shields.io/badge/aiogram-3.22-blue?style=flat" />
+<img alt="FastAPI" src="https://img.shields.io/badge/fastapi-0.116-green?style=flat&logo=fastapi&logoColor=white" />
+<img alt="React" src="https://img.shields.io/badge/react-18-61dafb?style=flat&logo=react&logoColor=white" />
+<img alt="TypeScript" src="https://img.shields.io/badge/typescript-5-blue?style=flat&logo=typescript&logoColor=white" />
+<img alt="Vite" src="https://img.shields.io/badge/vite-5-646cff?style=flat&logo=vite&logoColor=white" />
+<img alt="Node" src="https://img.shields.io/badge/node-20-339933?style=flat&logo=node.js&logoColor=white" />
+<img alt="License" src="https://img.shields.io/badge/license-MIT-green?style=flat" />
+<img alt="Security" src="https://img.shields.io/badge/security-hardened-brightgreen?style=flat" />
 
 </div>
 
-## 📌 Description
-⠀
+---
 
-**Aiogram Bot Template** — This template helps you quickly bootstrap Telegram bots on the `aiogram` 3.x stack. It already includes a ready project structure, command and message handlers, optional PostgreSQL/Redis integration, logging with `loguru`, internationalization, support for `aiogram-dialog`, dependency injection via `dishka` with optional webhook handling on `FastAPI`, plus a Mini App backend (FastAPI) and a React webapp scaffold for profiles.
+## ✨ Features
 
-⠀
-## 🌐 Mini Apps Support
-⠀
+**Telegram Bot Foundation**
+- Built on **aiogram 3.x** with async handlers and modern router setup
+- **Dependency Injection** via Dishka for clean architecture
+- **PostgreSQL + Redis** with SQLAlchemy ORM and async access
+- **Alembic migrations** for database versioning
+- **i18n support** with Fluent/Fluentogram
+- **aiogram-dialog** for complex multi-step flows
+- **FSM support** (Finite State Machine) for forms and wizards
+- **Prometheus metrics** middleware ready (`/metrics` when enabled)
 
-This template includes full support for Telegram Mini Apps with FastAPI backend and React frontend.
+**Mini Apps (Main Feature)**
+- **React 18 + TypeScript** frontend in `webapp/`
+- **Vite** for fast development and hot reload
+- **Telegram WebApp SDK** integration (theme, haptics, main button)
+- **Secure auth**: HMAC-SHA256 validation of `initData`
+- **Replay protection** with `auth_date` TTL (1 hour)
+- **Rate limiting**: 100 req/min per IP (in-memory)
+- **Full i18next localization**
+- **Responsive, mobile-first UI**
 
-### Architecture
+**Security Hardened**
+- **CORS restricted** to Telegram domains by default
+- **Security headers** via nginx (CSP, X-Frame-Options, HSTS, etc.)
+- **Non-root Docker containers** for runtime safety
+- **SQL injection protection** via ORM
+- **XSS protection** via React auto-escaping + CSP
 
-```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  Telegram App   │────▶│     Nginx       │────▶│   FastAPI API   │
-│  (WebApp)       │     │  (reverse proxy)│     │   (bot:8000)    │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
-        │                       │                       │
-        │                       ▼                       ▼
-        │               ┌─────────────────┐     ┌─────────────────┐
-        └──────────────▶│  React WebApp   │     │   PostgreSQL    │
-                        │  (webapp:80)    │     │   + Redis       │
-                        └─────────────────┘     └─────────────────┘
-```
+**DevOps Ready**
+- **Docker Compose** for one-command deployment
+- **Multi-stage Dockerfiles** for slim images
+- **nginx** reverse proxy for API + WebApp
+- **Structured logging** via Loguru
+- **Health checks** for services
+- **Pre-commit hooks** (Ruff, Mypy, Black, isort)
 
-### API Endpoints
+---
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/auth/validate` | POST | Validate Telegram initData |
-| `/api/users/me` | GET | Get current user profile |
-| `/api/users/me` | PATCH | Update profile (bio, language) |
-| `/api/health` | GET | Health check |
+## ✅ Why Choose This Template?
 
-### Security Features
+- **Mini App first**: The bot and WebApp are designed to ship together
+- **Production-grade**: migrations, observability, security, and deployment guides
+- **Clean architecture**: repositories, UoW, services, DI container
+- **Fast onboarding**: Quick Start gets you running in minutes
 
-- ✅ HMAC-SHA256 validation of Telegram initData
-- ✅ Replay attack protection (1 hour token expiration)
-- ✅ CORS restricted to Telegram domains only
-- ✅ Rate limiting (100 requests/minute)
-- ✅ Security headers via nginx
-- ✅ Non-root Docker user
+---
 
-### Running WebApp Locally
+## 🚀 Quick Start (5 minutes)
 
-1. Start all services:
-   ```bash
-   docker-compose up -d
-   ```
-
-2. Or run separately for development:
-   ```bash
-   # Terminal 1: Backend
-   make run
-   
-   # Terminal 2: Frontend
-   cd webapp
-   npm install
-   npm run dev
-   ```
-
-3. Configure your bot to use WebApp (see `/profile` command example).
-
-### Environment Variables for Mini Apps
+### 1. Clone & Configure
 
 ```bash
-# .env
-ENVIRONMENT=development  # development | production
-
-# API Settings
-API__HOST=0.0.0.0
-API__PORT=8000
-
-# WebApp URL (for CORS)
-WEBAPP__URL=https://your-domain.com
-```
-
-⠀
-## 🔨 Functions
-⠀
-
-*   `/start` - Start the bot
-*   `/language` - Change language
-*   `/help` - Help
-*   `/profile` - Open your Mini App profile
-*   `/admin` - Command for administrators
-*   `/dialog` - Demo dialog using `aiogram-dialog`
-*   `/fsm` - Demo finite state machine form
-
-⠀
-## 🗂️ Template structure
-⠀
-
-```
-📁 aiogram_bot_template/
-├───┐ 📂 .github/
-│   ├───┐ 📂 ISSUE_TEMPLATE/
-│   │   ├── bug_report.md
-│   │   └── feature_request.md
-│   └───┐ 📂 workflows/
-│       ├── ci.yml
-│       └── docker.yml
-│
-├───┐ 📂 docs/
-│   ├── getting-started.md
-│   ├── README.md
-│   ├───┐ 📂 guides/
-│   ├───┐ 📂 reference/
-│   └───┐ 📂 releases/
-│
-├───┐ 📂 migrations/
-│   ├── env.py
-│   └───┐ 📂 versions/
-│
-├───┐ 📂 scripts/
-│   ├── create_migration.sh
-│   ├── db_seed.py
-│   └── health_check.py
-│
-├───┐ 📂 source/
-│   ├───┐ 📂 api/
-│   │   ├── __init__.py
-│   │   ├── app.py
-│   │   ├───┐ 📂 middlewares/
-│   │   ├───┐ 📂 routes/
-│   │   └───┐ 📂 utils/
-│   │
-│   ├───┐ 📂 config/
-│   │   ├── __init__.py
-│   │   └── config_reader.py
-│   │
-│   ├───┐ 📂 constants/
-│   │   ├── __init__.py
-│   │   ├── api.py
-│   │   ├── logging.py
-│   │   └── throttling.py
-│   │
-│   ├───┐ 📂 data/
-│   │   ├── __init__.py
-│   │   ├── 📂 error_logs/
-│   │   └── 📂 full_logs/
-│   │
-│   ├───┐ 📂 database/
-│   │   ├───┐ 📂 core/
-│   │   │   └── __init__.py
-│   │   │
-│   │   ├───┐ 📂 models/
-│   │   │   ├── __init__.py
-│   │   │   ├── base.py
-│   │   │   └── user.py
-│   │   │
-│   │   ├───┐ 📂 repositories/
-│   │   │   ├── __init__.py
-│   │   │   ├── base.py
-│   │   │   └── user.py
-│   │   │
-│   │   ├───┐ 📂 specifications/
-│   │   │   ├── __init__.py
-│   │   │   ├── base.py
-│   │   │   └── user.py
-│   │   │
-│   │   ├───┐ 📂 tools/
-│   │   │   ├── __init__.py
-│   │   │   ├── mixin.py
-│   │   │   └── uow.py
-│   │   │
-│   │   └── __init__.py
-│   │
-│   ├───┐ 📂 domain/
-│   │   ├── __init__.py
-│   │   ├── events.py
-│   │   ├── exceptions.py
-│   │   └── value_objects.py
-│   │
-│   ├───┐ 📂 dto/
-│   │   ├── __init__.py
-│   │   ├── base.py
-│   │   └── user.py
-│   │
-│   ├───┐ 📂 enums/
-│   │   ├── __init__.py
-│   │   └── roles.py
-│   │
-│   ├───┐ 📂 factory/
-│   │   ├── __init__.py
-│   │   ├── api.py
-│   │   ├── bot.py
-│   │   ├── container.py
-│   │   ├── dispatcher.py
-│   │   ├── dishka.py
-│   │   └── server.py
-│   │
-│   ├───┐ 📂 infrastructure/
-│   │   ├── __init__.py
-│   │   ├───┐ 📂 cache/
-│   │   │   ├── __init__.py
-│   │   │   ├── base.py
-│   │   │   └── redis.py
-│   │   │
-│   │   └───┐ 📂 monitoring/
-│   │       ├── __init__.py
-│   │       └── prometheus.py
-│   │
-│   ├───┐ 📂 locales/
-│   │   ├───┐ 📂 en/
-│   │   │   ├── buttons.ftl
-│   │   │   └── messages.ftl
-│   │   └───┐ 📂 ru/
-│   │       ├── buttons.ftl
-│   │       └── messages.ftl
-│   │
-│   ├───┐ 📂 services/
-│   │   ├── __init__.py
-│   │   ├── base.py
-│   │   ├── cache_service.py
-│   │   └── user_service.py
-│   │
-│   ├───┐ 📂 schemas/
-│   │   ├── __init__.py
-│   │   ├── auth.py
-│   │   ├── base.py
-│   │   ├── responses.py
-│   │   └── user.py
-│   │
-│   ├───┐ 📂 telegram/
-│   │   ├───┐ 📂 filters/
-│   │   │   ├── __init__.py
-│   │   │   ├── admin.py
-│   │   │   ├── admin_protect.py
-│   │   │   ├── chat_type.py
-│   │   │   └── validators.py
-│   │   │
-│   │   ├───┐ 📂 handlers/
-│   │   │   ├───┐ 📂 admin/
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── callbacks.py
-│   │   │   │   ├── commands.py
-│   │   │   │   ├── fsm.py
-│   │   │   │   └── messages.py
-│   │   │   ├───┐ 📂 errors/
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── common.py
-│   │   │   │   ├── orm.py
-│   │   │   │   └── telegram.py
-│   │   │   ├───┐ 📂 user/
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── callbacks.py
-│   │   │   │   ├── commands.py
-│   │   │   │   ├── fsm.py
-│   │   │   │   └── messages.py
-│   │   │   └───┐ 📂 webapp/
-│   │   │       ├── __init__.py
-│   │   │       └── callbacks.py
-│   │   │
-│   │   ├───┐ 📂 keyboards/
-│   │   │   ├── __init__.py
-│   │   │   ├── base.py
-│   │   │   ├── builder.py
-│   │   │   ├── callback_factory.py
-│   │   │   ├── inline.py
-│   │   │   ├── reply.py
-│   │   │   └── webapp.py
-│   │   │
-│   │   ├───┐ 📂 middlewares/
-│   │   │   ├── __init__.py
-│   │   │   ├── auth.py
-│   │   │   ├── base.py
-│   │   │   ├── reporting.py
-│   │   │   └── throttling.py
-│   │   │
-│   │   ├───┐ 📂 states/
-│   │   │   ├── __init__.py
-│   │   │   ├── dialog.py
-│   │   │   └── form.py
-│   │   │
-│   │   └───┐ 📂 dialogs/
-│   │       ├── __init__.py
-│   │       └── dialog.py
-│   │
-│   ├───┐ 📂 utils/
-│   │   ├── __init__.py
-│   │   ├── logger.py
-│   │   ├── set_commands.py
-│   │   ├── translator.py
-│   │   └── validators.py
-│   │
-│   └── 📄 __main__.py
-│
-├───┐ 📂 tests/
-│   ├── __init__.py
-│   ├── conftest.py
-│   ├───┐ 📂 e2e/
-│   ├───┐ 📂 integration/
-│   └───┐ 📂 unit/
-│
-├───┐ 📂 nginx/
-│   ├── nginx.conf
-│   ├── nginx.dev.conf
-│   └── nginx.webapp.conf
-│
-├───┐ 📂 webapp/
-│   ├───┐ 📂 public/
-│   ├───┐ 📂 src/
-│   ├── .env.example
-│   ├── index.html
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── vite.config.ts
-│
-├── alembic.ini
-├── .env.example
-├── .dockerignore
-├── .gitignore
-├── .pre-commit-config.yaml
-├── docker-compose.dev.yml
-├── docker-compose.yml
-├── Dockerfile
-├── webapp.Dockerfile
-├── LICENSE
-├── Makefile
-├── pyproject.toml
-├── README.md
-├── reorganize-docs.sh
-├── SECURITY.md
-└── uv.lock
-```
-
-⠀
-## 📋 About the content
-⠀
-
-*   `📁 source/` - Main application source code.
-*   `📁 source/config/` - Application configuration settings.
-*   `📁 source/constants/` - Project constants.
-*   `📁 source/data/` - Data generated by the application (e.g., logs).
-*   `📁 source/data/error_logs/` - Log files containing only errors.
-*   `📁 source/data/full_logs/` - Full log files.
-*   `📁 source/database/` - Database interaction logic.
-*   `📁 source/database/core/` - Database core modules (connection, sessions).
-*   `📁 source/database/models/` - Database model definitions.
-*   `📁 source/database/repositories/` - Repositories for database data access.
-*   `📁 source/database/specifications/` - Query specifications.
-*   `📁 source/database/tools/` - Helper tools for working with the database.
-*   `📁 source/domain/` - Domain events and value objects.
-*   `📁 source/dto/` - Data transfer objects.
-*   `📁 source/enums/` - Enum definitions.
-*   `📁 source/factory/` - Factories for creating the bot, dispatcher, webhook server and DI container.
-*   `📁 source/infrastructure/` - External integrations (cache, monitoring).
-*   `📁 source/locales/` - Localization files (translations).
-*   `📁 source/locales/en/` - English language localization.
-*   `📁 source/locales/ru/` - Russian language localization.
-*   `📁 source/services/` - Business logic layer.
-*   `📁 source/telegram/` - Components related to Telegram and `aiogram`.
-*   `📁 source/telegram/filters/` - Custom `aiogram` filters.
-*   `📁 source/telegram/handlers/` - Handlers for processing Telegram updates.
-*   `📁 source/telegram/handlers/admin/` - Handlers for administrators.
-*   `📁 source/telegram/handlers/errors/` - Error handlers.
-*   `📁 source/telegram/handlers/user/` - Handlers for users.
-*   `📁 source/telegram/keyboards/` - Telegram keyboards.
-*   `📁 source/telegram/middlewares/` - `aiogram` middlewares (throttling, error reporting).
-*   `📁 source/telegram/states/` - `aiogram` FSM states.
-*   `📁 source/telegram/dialogs/` - Dialog windows built with `aiogram-dialog`.
-*   `📁 source/utils/` - Helper utilities (logger setup, commands, translations).
-*   `📄 source/__main__.py` - Main entry point within the `source` package.
-*   `📄 .env.example` - Example file for sensitive data (.env).
-*   `📁 docs/` - Development and deployment documentation.
-*   `📁 scripts/` - Helper scripts for development tasks.
-*   `📁 tests/` - Test suite.
-
-⠀
-## ⚙️ Configuration
-⠀
-
-Before running the bot, you need to set up your environment variables. Copy the `.env.example` file to `.env` and fill in your credentials and settings:
-
-```shell
+git clone https://github.com/MrConsoleka/aiogram-miniapp-template.git
+cd aiogram-miniapp-template
 cp .env.example .env
-# Then edit the .env file with your configurations
 ```
 
-⠀
-## 🔓 Bot .env Variables
-⠀
+Edit `.env` and add your bot token from [@BotFather](https://t.me/BotFather):
 
-| Environment Variable Name | Description |
-|---------------------------|-------------|
-| ENVIRONMENT               | Application environment (`development`, `test`, `production`). |
-| TG__WEBHOOK_USE           | Boolean value (`True`/`False`) indicating whether to use webhooks (`True`) or long polling (`False`). |
-| TG__WEBHOOK_PATH          | Path for Telegram to send webhook updates (appended to `WEBHOOK__URL`). |
-| TG__BOT_TOKEN             | Your Telegram bot token, obtained from `@BotFather` in Telegram. |
-| TG__ADMIN_IDS             | List of Telegram user IDs (JSON list or comma-separated) who will have administrator rights in the bot. |
-| WEBHOOK__URL              | Public URL where Telegram will send updates if webhooks are enabled. |
-| WEBHOOK__HOST             | Host or IP address where the webhook server will listen for incoming connections (usually `0.0.0.0`). |
-| WEBHOOK__PORT             | Port on which the webhook server will listen for incoming connections. |
-| WEBHOOK__PATH             | Specific path on the server where Telegram will send POST requests with updates. |
-| WEBHOOK__SECRET           | Secret token that Telegram includes in webhook request headers to verify authenticity. |
-| DB__HOST                  | Database server host. |
-| DB__PORT                  | Port for connecting to the database. |
-| DB__USER                  | Username for database authentication. |
-| DB__PASSWORD              | Password for database authentication. |
-| DB__NAME                  | Name of the database to connect to. |
-| REDIS__HOST               | Redis server host used for FSM and/or caching. |
-| REDIS__PORT               | Port for connecting to the Redis server. |
-| REDIS__USER               | Username for Redis authentication (if used). |
-| REDIS__PASSWORD           | Password for Redis authentication (if used). |
-| REDIS__DB                 | Redis database index to use (a number from 0 to 15, default is 0). |
-
-⠀
-## 💻 Bot Setup
-⠀
-
-### 📦 Using UV
-⠀
-1.  Clone the repository and navigate into the project directory:
-
-    ```shell
-     git clone https://github.com/MrConsoleka/aiogram-bot-template.git
-     cd aiogram-bot-template
-    ```
-
-2.  Ensure you have `uv` installed. If not, you can install it, for example, using `pip`:
-
-    ```shell
-    pip install uv
-    ```
-
-3.  Create a virtual environment:
-
-    ```shell
-    make venv
-    ```
-
-4.  Activate the virtual environment:
-
-    ```shell
-    # For Linux or macOS:
-    source .venv/bin/activate
-
-    # For Windows:
-    .venv\Scripts\activate
-    ```
-
-5.  Install dependencies:
-
-    ```shell
-    make install
-    ```
-
-6.  To run the bot, use the command:
-
-    ```shell
-    make run
-    ```
-⠀
-### 📦 Using Docker
-⠀
-1.  Clone the repository and navigate into the project directory:
-
-    ```shell
-    git clone https://github.com/MrConsoleka/aiogram-bot-template.git
-    cd aiogram-bot-template
-    ```
-
-2.  Build the Docker Image:
-
-    ```shell
-    make docker-build
-    ```
-
-3.  Run the Project with Docker Compose:
-
-    ```shell
-    make docker-up
-    ```
-
-4.  Verify Bot is Running (Optional):
-
-    ```shell
-    make docker-logs
-    ```
-    or
-    ```shell
-    make docker-logs SERVICE=bot
-    ```
-
-5.  Stop the Project:
-
-    ```shell
-    make docker-down
-    ```
-
-⠀
-## 🗄️ Migrations
-⠀
-
-Create and apply migrations with Alembic:
-
-```shell
-make migration MESSAGE="create users"
-uv run alembic upgrade head
+```env
+TG__BOT_TOKEN=YOUR_BOT_TOKEN_HERE
+TG__ADMIN_IDS=[YOUR_TELEGRAM_ID]
+WEBAPP__URL=http://localhost
 ```
 
-⠀
-## 🧪 Testing
-⠀
+### 2. Start Everything with Docker
 
-Run tests locally:
+```bash
+docker compose up -d
+```
 
-```shell
+That is it. 🎉
+
+- Bot responds to `/start`
+- Mini App is available at `http://localhost`
+- API is available at `http://localhost/api`
+- Open `/profile` in your bot to launch the Mini App
+
+### 3. Or Run Locally (Development)
+
+```bash
+# Terminal 1: Backend + Bot
+make venv
+make install
+make run
+
+# Terminal 2: Frontend (Mini App)
+cd webapp
+npm install
+npm run dev
+```
+
+If you are running the Vite dev server, set `WEBAPP__URL=http://localhost:3000` in `.env`.
+
+Open your bot and run `/profile` to see the Mini App.
+
+---
+
+## 📚 Documentation
+
+Full documentation lives in `docs/`.
+
+**Getting Started**
+- [Installation & Setup](docs/getting-started.md)
+- [Configuration Guide](docs/guides/configuration.md)
+
+**Bot Development**
+- [Handlers](docs/guides/handlers.md)
+- [Services](docs/guides/services.md)
+- [Database](docs/guides/database.md)
+
+**Mini Apps Development**
+- [Mini Apps Overview](docs/guides/mini-apps/README.md)
+- [Quick Start](docs/guides/mini-apps/quickstart.md)
+- [Authentication](docs/guides/mini-apps/authentication.md)
+- [API Reference](docs/guides/mini-apps/api-reference.md)
+- [Frontend Guide](docs/guides/mini-apps/frontend-guide.md)
+- [Adding Features](docs/guides/mini-apps/adding-features.md)
+- [Theming](docs/guides/mini-apps/theming.md)
+- [Security](docs/guides/mini-apps/security.md)
+- [Deployment](docs/guides/mini-apps/deployment.md)
+- [Troubleshooting](docs/guides/mini-apps/troubleshooting.md)
+
+**Deployment**
+- [Docker Guide](docs/guides/docker.md)
+- [Production Deployment](docs/guides/deployment.md)
+
+**Reference**
+- [Architecture](docs/reference/architecture.md)
+- [Project Structure](docs/reference/project-structure.md)
+- [REST API Reference](docs/reference/rest-api.md)
+- [Python API Reference](docs/reference/api.md)
+
+---
+
+## 🏗️ Architecture
+
+```
+┌──────────────────┐      ┌──────────────────┐      ┌──────────────────┐
+│   Telegram User  │─────▶│    Your Bot      │─────▶│   PostgreSQL     │
+│   (Mobile App)   │      │  (aiogram 3.x)   │      │   + Redis        │
+└──────────────────┘      └──────────────────┘      └──────────────────┘
+         │                         │
+         │ Opens Mini App          │
+         ▼                         ▼
+┌──────────────────┐      ┌──────────────────┐
+│  React Mini App  │◀────▶│  FastAPI Backend │
+│   (TypeScript)   │      │   (/api/...)     │
+└──────────────────┘      └──────────────────┘
+         │                         │
+         └────────▶ nginx ◀────────┘
+              (reverse proxy)
+```
+
+---
+
+## 🎨 Mini App Demo
+
+Preview of the included profile page (replace with your own UI):
+
+<div align="center">
+  <img src="docs/assets/miniapp-preview.svg" width="720" alt="Mini App preview" />
+</div>
+
+Try it live in your bot with `/profile`.
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend
+- **[aiogram 3.x](https://github.com/aiogram/aiogram)** - Async Telegram Bot framework
+- **[aiogram-dialog](https://github.com/aiogram/aiogram-dialog)** - Dialog manager
+- **[FastAPI](https://fastapi.tiangolo.com/)** - Web API
+- **[Dishka](https://github.com/reagento/dishka)** - Dependency injection
+- **[SQLAlchemy](https://www.sqlalchemy.org/)** - ORM
+- **[Alembic](https://alembic.sqlalchemy.org/)** - Migrations
+- **[Pydantic](https://pydantic.dev/)** - Validation and settings
+- **[Redis](https://redis.io/)** - FSM storage and caching
+- **[Loguru](https://github.com/Delgan/loguru)** - Logging
+
+### Frontend (Mini Apps)
+- **[React 18](https://react.dev/)** - UI library
+- **[TypeScript](https://www.typescriptlang.org/)** - Type safety
+- **[Vite](https://vitejs.dev/)** - Build tool
+- **[Telegram WebApp SDK](https://core.telegram.org/bots/webapps)** - Mini Apps API
+- **[i18next](https://www.i18next.com/)** - Internationalization
+- **[Zustand](https://github.com/pmndrs/zustand)** - State management
+
+### DevOps
+- **Docker** + **Docker Compose**
+- **nginx** reverse proxy
+- **Ruff**, **Mypy**, **Black**, **isort**, **pre-commit**
+
+---
+
+## 📁 Project Structure
+
+```
+aiogram-miniapp-template/
+├── source/                # Python source code
+│   ├── api/              # FastAPI backend for Mini Apps
+│   ├── telegram/         # Bot handlers, keyboards, filters
+│   ├── database/         # Models, repositories, migrations
+│   ├── services/         # Business logic layer
+│   ├── config/           # Settings and configuration
+│   └── utils/            # Helpers, logger, i18n
+├── webapp/               # React Mini App frontend
+│   ├── src/
+│   ├── public/locales/
+│   └── vite.config.ts
+├── docs/                 # Documentation
+├── nginx/                # nginx configurations
+├── migrations/           # Alembic migrations
+├── tests/                # Test suite
+└── docker-compose.yml    # Docker orchestration
+```
+
+Full structure is documented in [docs/reference/project-structure.md](docs/reference/project-structure.md).
+
+---
+
+## 🔐 Security
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| HMAC-SHA256 Validation | ✅ | Verifies Telegram `initData` signature |
+| Replay Attack Protection | ✅ | `auth_date` TTL = 1 hour |
+| CORS Restrictions | ✅ | Telegram domains only (default) |
+| Rate Limiting | ✅ | 100 req/min per IP (in-memory) |
+| Security Headers | ✅ | CSP, HSTS, X-Frame-Options via nginx |
+| Non-root Containers | ✅ | Docker runs as unprivileged user |
+| ORM Protection | ✅ | SQLAlchemy parameterization |
+| XSS Protection | ✅ | React escaping + CSP |
+
+See [SECURITY.md](SECURITY.md) and [Mini Apps Security](docs/guides/mini-apps/security.md).
+
+---
+
+## 🧪 Development
+
+### Run Tests
+
+```bash
 uv run pytest tests/
 ```
 
-⠀
-## 🧰 Pre-commit
-⠀
+### Linting & Type Checking
 
-```shell
+```bash
+uv run ruff check --fix .
+uv run mypy source/
 pre-commit install
 pre-commit run --all-files
 ```
 
-⠀
-## 🧩 Development Services
-⠀
+### Database Migrations
 
-```shell
-make dev-up
-make dev-down
+```bash
+# Create migration
+make migration MESSAGE="add bio field"
+
+# Apply migrations
+uv run alembic upgrade head
+
+# Rollback
+uv run alembic downgrade -1
 ```
 
-⠀
-## 📋 Todo List
-⠀
+---
 
-- [x] touch the grass
-- [x] Alembic
-- [x] Aiogram-dialog
-- [x] .github/workflows
+## 📝 Usage Examples
 
-⠀
-## 🗃️ Stack of Technologies
-⠀
+### Add a New Command
 
-*   [aiogram-3x](https://github.com/aiogram/aiogram) - Asynchronous framework for the Telegram Bot API.
-*   [aiogram-dialog](https://github.com/aiogram/aiogram-dialog) - Dialog manager for building interactive flows.
-*   [dishka](https://github.com/arslnk/dishka) - Dependency injection container.
-*   [fastapi](https://github.com/tiangolo/fastapi) & [uvicorn](https://github.com/encode/uvicorn) - Webhook server stack.
-*   [pydantic](https://github.com/pydantic/pydantic) & [pydantic-settings](https://github.com/pydantic/pydantic-settings) - Data validation and configuration management.
-*   [postgresql](https://github.com/postgres/postgres) with [sqlalchemy](https://github.com/sqlalchemy/sqlalchemy) and [asyncpg](https://github.com/MagicStack/asyncpg?tab=readme-ov-file) - Database layer.
-*   [redis](https://redis.io/) - In-memory data store for FSM and caching.
-*   [loguru](https://github.com/Delgan/loguru) - Logging library.
-*   [prometheus-client](https://github.com/prometheus/client_python) - Metrics exporter (optional).
-*   [cachetools](https://github.com/tkem/cachetools) & [fluentogram](https://github.com/Arustinal/fluentogram) - Caching and localization helpers.
-*   [Ruff](https://github.com/astral-sh/ruff), [Mypy](https://github.com/python/mypy), [Pre-commit](https://github.com/pre-commit/pre-commit), [Isort](https://github.com/pycqa/isort), [Black](https://github.com/psf/black) - Code quality and formatting tools.
+```python
+# source/telegram/handlers/user/commands.py
+from aiogram.filters import Command
+from aiogram.types import Message
 
-⠀
-## 💼 Credits
-⠀
+@user_commands_router.message(Command("hello"))
+async def hello_command(message: Message) -> None:
+    await message.answer(f"Hello, {message.from_user.first_name}!")
+```
 
--   [aiogram_template](https://github.com/Lems0n/aiogram_template) - Inspired by Abdullah's project, many thanks to him <3
+### Create a Mini App Page
 
-⠀
-## 👤 Author of Aiogram Template Bot
-⠀
-**© Roman Alekseev**
+```tsx
+// webapp/src/pages/NewPage.tsx
+import { FC } from "react";
+import { useTranslation } from "react-i18next";
+
+export const NewPage: FC = () => {
+  const { t } = useTranslation();
+
+  return (
+    <div>
+      <h1>{t("newPage.title")}</h1>
+    </div>
+  );
+};
+```
+
+More examples in `docs/`.
+
+---
+
+## 🚀 Deployment
+
+### Quick Deploy with Docker
+
+```bash
+# 1. Set production environment
+echo "ENVIRONMENT=production" >> .env
+
+# 2. Configure your domain
+echo "WEBAPP__URL=https://your-domain.com" >> .env
+
+# 3. Build and start
+docker compose up -d --build
+```
+
+See [docs/guides/deployment.md](docs/guides/deployment.md) for a full production guide.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m "Add amazing feature"`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please run pre-commit hooks before submitting.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
+
+---
+
+## 🙏 Acknowledgments
+
+- [aiogram_template](https://github.com/Lems0n/aiogram_template) for inspiration
+- [Telegram Bot API](https://core.telegram.org/bots/api)
+- [Telegram Mini Apps](https://core.telegram.org/bots/webapps)
+
+---
+
+## 📞 Support
+
+- Issues: [GitHub Issues](https://github.com/MrConsoleka/aiogram-miniapp-template/issues)
+- Discussions: [GitHub Discussions](https://github.com/MrConsoleka/aiogram-miniapp-template/discussions)
+- Security: See [SECURITY.md](SECURITY.md)
+
+---
+
+## 🗺️ Roadmap
+
+- Payment integration examples
+- Admin panel Mini App
+- Additional Mini App examples (forms, catalogs, games)
+- Monitoring stack (Prometheus + Grafana)
+- CI/CD examples (GitHub Actions, GitLab CI)
+- Kubernetes manifests
+
+<div align="center">
+  <p>Made with ❤️ by <a href="https://github.com/MrConsoleka">Roman Alekseev</a></p>
+  <p>⭐ Star this repo if it helped you!</p>
+</div>
