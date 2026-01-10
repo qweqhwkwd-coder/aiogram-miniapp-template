@@ -23,9 +23,6 @@ async def validate_auth(
     """Validate auth data and get/create user."""
     user = await user_service.get_or_create_user(
         telegram_id=user_data["id"],
-        username=user_data.get("username"),
-        first_name=user_data.get("first_name"),
-        last_name=user_data.get("last_name"),
         language_code=user_data.get("language_code"),
     )
     return ApiResponse(data=build_user_read(user, user_data))
