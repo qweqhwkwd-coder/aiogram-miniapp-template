@@ -1,0 +1,19 @@
+# MY-OS backend — Фаза 0
+# Версии указаны нижней границей; после установки зафиксируй точные через
+#   pip freeze > requirements.lock.txt
+
+fastapi>=0.115
+uvicorn[standard]>=0.30
+gunicorn>=22.0
+aiogram>=3.10
+pydantic>=2.8
+pydantic-settings>=2.4
+supabase>=2.7
+httpx>=0.27
+python-multipart>=0.0.9
+APScheduler>=3.10
+
+# AI-слой (нужно с Фазы 4; на Фазе 0 можно закомментировать ради экономии RAM)
+# faster-whisper>=1.0
+# google-generativeai>=0.7
+# groq>=0.9
